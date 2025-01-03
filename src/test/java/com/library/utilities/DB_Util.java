@@ -1,6 +1,8 @@
 package com.library.utilities;
 
 import java.sql.*;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class DB_Util {
     private static Connection con;
@@ -52,7 +54,15 @@ public class DB_Util {
         return rs;
 
     }
+    private static void resetCursor() {
 
+        try {
+            rs.beforeFirst();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
     /**
      * destroy method to clean up all the resources after being used
      */
@@ -68,4 +78,45 @@ public class DB_Util {
         }
 
     }
+    public static int getColumnCount() {
+
+        int columnCount = 0;
+
+        try {
+            columnCount = rsmd.getColumnCount();
+
+        } catch (Exception e) {
+            System.out.println("ERROR OCCURRED WHILE GETTING COLUMN COUNT " + e.getMessage());
+        }
+
+        return columnCount;
+
+    }
+    public static Map<String,String> getRowMap(int rowNum) {
+
+        Map<String, String> rowMap = new LinkedHashMap<>();
+        int columnCount = getColumnCount();
+
+        try {
+
+            rs.absolute(rowNum);
+
+            for (int colIndex = 1; colIndex <= columnCount; colIndex++) {
+                String columnName = rsmd.getColumnName(colIndex);
+                String cellValue = rs.getString(colIndex);
+                rowMap.put(columnName, cellValue);
+            }
+
+        } catch (Exception e) {
+            System.out.println("ERROR OCCURRED WHILE getRowMap " + e.getMessage());
+        } finally {
+            resetCursor();
+        }
+
+
+        return rowMap;
+    }
+
+
+
 }

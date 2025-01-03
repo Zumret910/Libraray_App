@@ -1,10 +1,12 @@
 package com.library.utilities;
 
+import com.github.javafaker.Faker;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class LibraryUtils {
@@ -54,6 +56,18 @@ public class LibraryUtils {
         credentials.put("password", password);
 
         return credentials;
+
+    }
+    public static Map<String,Object> createRandomBook(){
+        Map<String,Object> book = new LinkedHashMap<>();
+        Faker faker=new Faker();
+        book.put("name",faker.book().title());
+        book.put("isbn",faker.book().genre());
+        book.put("year",faker.number().numberBetween(1900, 2022));
+        book.put("author",faker.book().author());
+        book.put("book_category_id",faker.number().numberBetween(1, 20));
+        book.put("description",faker.book().publisher());
+        return book;
 
     }
 }

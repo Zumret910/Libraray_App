@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class SignInPage {
+public class SignInPage extends TopNavigations{
     public SignInPage() {
         PageFactory.initElements(Driver.get(), this);
     }
@@ -22,10 +22,10 @@ public class SignInPage {
 
     public void login() {
 
-        String username = ConfigurationReader.getProperty("username");
-        //String username = System.getenv("USERNAME");
-        String password = ConfigurationReader.getProperty("password");
-        //String password = System.getenv("PASSWORD");
+        //String username = ConfigurationReader.getProperty("emailAddress");
+        String username = System.getenv("EMAIL");
+        //String password = ConfigurationReader.getProperty("password");
+        String password = System.getenv("PASSWORD");
         usernameField.sendKeys(username);
         passwordField.sendKeys(password);
         loginButton.click();
