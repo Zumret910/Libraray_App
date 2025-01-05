@@ -59,9 +59,7 @@ public class Driver {
                 default:
                     throw new IllegalArgumentException("Invalid browser type specified in the configuration: " + browserType);
             }
-            // Maximize the browser window and set implicit wait
-            driverPool.get().manage().window().maximize();
-            driverPool.get().manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+
         }
 
         return driverPool.get();
