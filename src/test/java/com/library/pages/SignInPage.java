@@ -31,4 +31,9 @@ public class SignInPage extends TopNavigations{
         loginButton.click();
 
     }
+    public void login(String email,String password) {
+        usernameField.sendKeys(email);
+        passwordField.sendKeys(password);
+        loginButton.click();
+    }
 }

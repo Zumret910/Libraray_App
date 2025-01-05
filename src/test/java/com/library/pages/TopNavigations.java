@@ -1,6 +1,8 @@
 package com.library.pages;
 
+import com.library.utilities.BrowserUtils;
 import com.library.utilities.Driver;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -15,6 +17,8 @@ public abstract class TopNavigations {
     public WebElement usersLink;
     @FindBy (xpath = "//span[.='Books']")
     public WebElement booksLink;
+    @FindBy(xpath = "//a[@id='navbarDropdown']/span")
+    public WebElement userNameDashboard;
 public void navigateByName(String moduleName){
     switch (moduleName.toLowerCase()){
         case "books":
@@ -27,5 +31,11 @@ public void navigateByName(String moduleName){
             dashboardLink.click();
             break;
     }
+}
+public String getUserNameText(){
+    userNameDashboard.click();
+    BrowserUtils.waitForPageToLoad(3);
+   return userNameDashboard.getText();
+
 }
 }

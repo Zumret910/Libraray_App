@@ -97,8 +97,10 @@ public class APIStep_Defs {
             case "book":
                 randomDataMap = LibraryUtils.createRandomBook();
                 break;
+            case "librarian":
             case "student":
-                // randomDataMap = BookitUtils.createRandomStudent();
+            case "admin":
+                randomDataMap = LibraryUtils.createRandomUser(dataType);
                 break;
             default:
                 throw new RuntimeException("Wrong data type is provide");
@@ -171,8 +173,42 @@ public class APIStep_Defs {
         BrowserUtils.waitForPageToLoad(5);
         String expectedBookName = (String) randomDataMap.get("name");
         booksPage.editBook(expectedBookName).click();
-        Assert.assertEquals(randomDataMap.get("name"),booksPage.getBookDataByAttribute("name"));
+        Assert.assertEquals(randomDataMap.get("name"), booksPage.getBookDataByAttribute("name"));
         Assert.assertEquals(randomDataMap.get("isbn"), booksPage.getBookDataByAttribute("isbn"));
         Assert.assertEquals(randomDataMap.get("author"), booksPage.getBookDataByAttribute("author"));
+    }
+
+    @And("created user information should match with Database")
+    public void createdUserInformationShouldMatchWithDatabase() {
+        //compare API with database
+        int expectedId = jp.getInt("user_id");
+        System.out.println(expectedId);
+        String quary = "select full_name,email,status,address from users where id=" + expectedId;
+        DB_Util.runQuery(quary);
+        Map<String, String> expectedUserData = DB_Util.getRowMap(1);
+        System.out.println("expectedBookData = " + expectedUserData);
+        for (Map.Entry<String, Object> entry : randomDataMap.entrySet()) {
+            if (expectedUserData.containsKey(entry.getKey())) {
+                Assert.assertEquals(entry.getValue(), expectedUserData.get(entry.getKey()));
+            }
+        }
+
+    }
+
+    @And("created user should be able to login Library UI")
+    public void createdUserShouldBeAbleToLoginLibraryUI() {
+           String userName=(String)randomDataMap.get("email");
+           String password=(String)randomDataMap.get("password");
+           signInPage.login(userName,password);
+    }
+
+    @And("created user name should appear in Dashboard Page")
+    public void createdUserNameShouldAppearInDashboardPage() {
+        BrowserUtils.waitForPageToLoad(5);
+       String userName=(String)randomDataMap.get("full_name");
+       String actualName=signInPage.getUserNameText();
+        System.out.println(actualName);
+        Assert.assertEquals(userName,actualName);
+
     }
 }
