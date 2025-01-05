@@ -28,6 +28,7 @@ public class APIStep_Defs {
     ValidatableResponse thenPart;
     String pathParam;
     Map<String, Object> randomDataMap;
+    private String token;
 
     @Given("I logged Library api as a {string}")
     public void i_logged_library_api_as_a(String role) {
@@ -210,5 +211,17 @@ public class APIStep_Defs {
         System.out.println(actualName);
         Assert.assertEquals(userName,actualName);
 
+    }
+
+    @Given("I logged Library api with credentials {string} and {string}")
+    public void iLoggedLibraryApiWithCredentialsAnd(String email, String password) {
+        token=LibraryUtils.getToken(email,password);
+        givenPart.header("x-library-token", token);
+
+    }
+
+    @And("I send token information as request body")
+    public void iSendTokenInformationAsRequestBody() {
+        givenPart.formParam("token",token);
     }
 }
