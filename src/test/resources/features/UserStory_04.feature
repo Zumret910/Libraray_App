@@ -29,7 +29,7 @@ Feature: : As a librarian, I want to create a new user using add_user endpoint s
     And the field value for "error" path should be equal to "You do not add/edit admins."
 
 
-   @db @ui
+   @db @ui @regression
   Scenario Outline: Create a new user ALL LAYERS
     Given I logged Library api as a "librarian"
     And Accept header is "application/json"

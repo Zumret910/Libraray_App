@@ -77,7 +77,6 @@ public class LibraryUtils {
         Map<String,Object> user = new LinkedHashMap<>();
         // Define the desired date format
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
         // Generate random dates within a specific range
         LocalDate startDate = LocalDate.now().minusDays(ThreadLocalRandom.current().nextInt(1, 31));
         LocalDate endDate = LocalDate.now().plusDays(ThreadLocalRandom.current().nextInt(1, 31));
